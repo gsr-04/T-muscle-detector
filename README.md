@@ -7,6 +7,19 @@ from 0 to 100; a higher score indicates a thinner-muscle appearance.
 > Research software only. Scores are image-derived measurements and are not
 > medical advice, a diagnosis, or a substitute for professional assessment.
 
+## Known limitations / 已知问题
+
+1. **Abdomen position and contour detection can be improved.** The current
+   result is sensitive to pose, lighting, clothing and body-shape differences;
+   the algorithm can be further upgraded, validated and tuned.
+2. **Arm-skin segmentation is not perfectly accurate.** LIP-20 and similar
+   skin models can make mistakes on complex poses, occlusion or different skin
+   tones. A measurement method based only on the body contour can be added or
+   used as an alternative.
+3. **Current score functions are linear.** The abdomen, shoulder/waist and arm
+   scores currently use one-stage linear mappings. They can be replaced with
+   nonlinear functions that better match the pattern of fitness progress.
+
 ## Detection flow
 
 1. Extract the body silhouette and locate shoulder, elbow and wrist landmarks
