@@ -35,7 +35,7 @@ def mpl_font(size=10):
 
 
 def choose_rows(values):
-    """Choose the first top-three maximum and its next three minima."""
+    """Choose three minima without using points after the last maximum."""
     maxima = [int(value) for value in find_peaks(values)[0]]
     ranked_maxima = sorted(
         maxima,
@@ -47,31 +47,33 @@ def choose_rows(values):
         if ranked_maxima
         else int(np.argmax(values))
     )
+    last_maximum = max(maxima) if maxima else len(values) - 1
     minima = [int(value) for value in find_peaks(-values)[0]]
     following_minima = [
-        row for row in minima if row > anchor
+        row for row in minima if anchor < row < last_maximum
     ]
     selected = following_minima[:3]
-
-    boundary_rows = []
-    last = len(values) - 1
-    if (
-        len(selected) < 3
-        and last not in selected
-        and values[last] <= values[last - 1]
-    ):
-        selected.append(last)
-        boundary_rows.append(last)
+    backward_rows = []
+    if len(selected) < 3:
+        earlier_minima = [
+            row for row in reversed(minima) if row < anchor
+        ]
+        for row in earlier_minima:
+            if len(selected) >= 3:
+                break
+            selected.append(row)
+            backward_rows.append(row)
 
     selected = sorted(set(selected))
     return {
         "rows": selected,
         "all_minima": minima,
         "following_minima": following_minima,
-        "boundary_rows": boundary_rows,
+        "backward_rows": backward_rows,
         "all_maxima": maxima,
         "top3_maxima": ranked_maxima,
         "anchor_maximum": anchor,
+        "last_maximum": last_maximum,
     }
 
 
@@ -478,7 +480,8 @@ def main():
             "row_maxima_top3": row_info["top3_maxima"],
             "row_maximum_anchor": row_info["anchor_maximum"],
             "row_minima_after_anchor": row_info["following_minima"],
-            "row_boundary_fallback": row_info["boundary_rows"],
+            "row_backward_fill": row_info["backward_rows"],
+            "row_last_maximum": row_info["last_maximum"],
             "rows": rows,
             "row_values": [
                 round(float(row_values[row]), 6) for row in rows
@@ -537,7 +540,7 @@ def main():
     lines = [
         "# 行函数与列函数极小值交点",
         "",
-        "- 行：从左向右，在前三高的局部极大值中取最靠左的一个，再取它之后的三个局部极小值；不足三点时用右边界极小值补齐。",
+        "- 行：从左向右，在前三高的局部极大值中取最靠左的一个作为锚点；只在锚点之后、最后一个极大值之前取局部极小值。不足三点时从锚点向前补取最近的极小值，不取最后一个极大值之后的点。",
         "- 列：从高到低检查内部极大值，取第一个左右两侧都有局部极小值的峰；全部候选都不满足时才使用 1/3、2/3 列。",
         "- 交点标注在对应的矩形裁剪图中。",
         "",

@@ -56,6 +56,7 @@ tools/                 reusable image-processing and model adapters
 src/                   torso, silhouette, pose and segmentation helpers
 tmuscle/               public command-line interface
 scripts/               installation and model-health helpers
+test_results/          curated public result bundles
 ```
 
 The public current-flow entrypoint is `pipeline/00_test_image.py`. Historical

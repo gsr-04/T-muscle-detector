@@ -181,40 +181,83 @@ def draw_selected_armmid(name):
     source = OUTFINAL / f"available_arm_{name}.png"
     image = imread(source)
 
+    narrowest_path = OUT3 / f"greensplit_{name}.json"
     waist_path = OUT3 / f"waist_{name}.json"
-    if waist_path.exists():
+    line = None
+    if narrowest_path.exists():
+        narrowest = json.loads(
+            narrowest_path.read_text(encoding="utf-8")
+        )
+        line = {
+            "row": int(narrowest["min_row"]),
+            "left": int(narrowest["left_green"]),
+            "right": int(narrowest["right_green"]),
+            "source": "green-split narrowest abdomen line",
+        }
+    elif waist_path.exists():
         waist = json.loads(waist_path.read_text(encoding="utf-8"))
         row = int(waist.get("waist_row") or 0)
         left = waist.get("green_left")
         right = waist.get("green_right")
         if row and left is not None and right is not None:
-            left, right = int(left), int(right)
-            cv2.line(
-                image,
-                (left, row),
-                (right, row),
-                (0, 0, 255),
-                2,
-                cv2.LINE_AA,
-            )
-            cv2.line(
-                image,
-                (0, row),
-                (image.shape[1] - 1, row),
-                (0, 0, 170),
-                1,
-                cv2.LINE_AA,
-            )
-            cv2.putText(
-                image,
-                f"belly {row}",
-                (6, max(14, row - 6)),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.6,
-                (0, 0, 255),
-                2,
-                cv2.LINE_AA,
-            )
+            line = {
+                "row": row,
+                "left": int(left),
+                "right": int(right),
+                "source": "legacy waist line fallback",
+            }
+    if line is not None:
+        row = line["row"]
+        left = line["left"]
+        right = line["right"]
+        cv2.line(
+            image,
+            (left, row),
+            (right, row),
+            (0, 0, 0),
+            6,
+            cv2.LINE_AA,
+        )
+        cv2.line(
+            image,
+            (left, row),
+            (right, row),
+            (0, 0, 255),
+            3,
+            cv2.LINE_AA,
+        )
+        cv2.line(
+            image,
+            (0, row),
+            (image.shape[1] - 1, row),
+            (0, 0, 170),
+            1,
+            cv2.LINE_AA,
+        )
+        for point in ((left, row), (right, row)):
+            cv2.circle(image, point, 6, (255, 255, 255), -1, cv2.LINE_AA)
+            cv2.circle(image, point, 4, (0, 0, 255), -1, cv2.LINE_AA)
+        label = f"narrowest abdomen {row} (width {right - left + 1}px)"
+        cv2.putText(
+            image,
+            label,
+            (6, max(14, row - 8)),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.55,
+            (0, 0, 0),
+            4,
+            cv2.LINE_AA,
+        )
+        cv2.putText(
+            image,
+            label,
+            (6, max(14, row - 8)),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.55,
+            (0, 0, 255),
+            2,
+            cv2.LINE_AA,
+        )
 
     shoulder_path = OUT3 / f"shoulderline_{name}.json"
     if shoulder_path.exists():

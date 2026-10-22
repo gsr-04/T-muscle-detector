@@ -1,0 +1,30 @@
+{
+  "image": "001",
+  "source_label": "001",
+  "weights": [
+    0.55,
+    0.3,
+    0.15
+  ],
+  "abdomen": {
+    "raw": 68.845518,
+    "measure": "open-angle mean",
+    "score": 95.085823
+  },
+  "waist": {
+    "raw": 2.003064516129032,
+    "measure": "shoulder / waist",
+    "score": 87.883064516129
+  },
+  "arm": {
+    "raw": 1.1653,
+    "measure": "kept line / four perpendiculars",
+    "score": 100.0
+  },
+  "weighted": {
+    "abdomen": 52.29720265000001,
+    "waist": 26.364919354838698,
+    "arm": 15.0
+  },
+  "total": 93.66212200483871
+}
