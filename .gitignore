@@ -1,0 +1,44 @@
+__pycache__/
+*.py[cod]
+*.pyd
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+.idea/
+.vscode/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# User data and generated outputs
+data/*
+!data/.gitkeep
+!data/README.md
+mydata/
+out/
+out1/
+out2/
+out3/
+outfinal/
+*.log
+
+# Model and run artefacts
+models/*
+!models/README.md
+!models/manifest.example.json
+*.onnx
+*.onnx.data
+*.onnx.data.part
+*.task
+*.tflite
+*.pth
+*.pt
+*.safetensors
+*.npy
+*.npz
+
+# Local overrides
+overrides.json

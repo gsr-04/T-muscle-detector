@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, cite the repository and the upstream model projects."
+title: "T-Muscle Detector"
+type: software
+version: 0.1.0
+date-released: 2026-10-22
+authors:
+  - name: "T-Muscle Detector contributors"
+license: MIT
+abstract: "Research pipeline for photograph-based torso muscle scoring."

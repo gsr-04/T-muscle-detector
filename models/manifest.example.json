@@ -1,0 +1,29 @@
+{
+  "note": "Paths are relative to the project root. Add SHA-256 hashes before redistributing model assets.",
+  "models": [
+    {
+      "path": "models/pose_landmarker_full.task",
+      "sha256": ""
+    },
+    {
+      "path": "models/birefnet_lite.onnx",
+      "sha256": ""
+    },
+    {
+      "path": "models/dexined_2024sep.onnx",
+      "sha256": ""
+    },
+    {
+      "path": "models/rtmpose-m-distill/onnx/rtmpose-m-distill-256x256.onnx",
+      "sha256": ""
+    },
+    {
+      "path": "models/schp-lip-20/onnx/schp-lip-20-int8-static.onnx",
+      "sha256": ""
+    },
+    {
+      "path": "models/schp-atr-18/onnx/schp-atr-18-int8-static.onnx",
+      "sha256": ""
+    }
+  ]
+}

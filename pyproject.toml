@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "t-muscle-detector"
+version = "0.1.0"
+description = "Research pipeline for photograph-based torso muscle scoring"
+readme = "README.md"
+requires-python = ">=3.10,<3.12"
+license = {file = "LICENSE"}
+authors = [{name = "T-Muscle Detector contributors"}]
+dependencies = [
+  "numpy>=1.24,<3",
+  "opencv-python>=4.8",
+  "scipy>=1.10",
+  "matplotlib>=3.7",
+  "Pillow>=10",
+  "onnxruntime>=1.17",
+  "mediapipe>=0.10.9",
+]
+
+[project.scripts]
+tmuscle = "tmuscle.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["tmuscle*"]
